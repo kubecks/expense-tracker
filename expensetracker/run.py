@@ -163,3 +163,13 @@ def save_expenses(self):
             self.expense_sheet.update(data_to_save)
         except Exception as e:
             self.logger.error(f"Error saving expenses to Google Sheets: {e}")
+
+def load_categories(self):
+        """Load expense categories from Google Sheets."""
+        try:
+            categories = self.load_data(self.categories_sheet, "Category")
+            print("Loaded categories:", categories)  
+            return categories
+        except Exception as e:
+            self.logger.error(f"Error loading categories from Google Sheets: {e}")
+            return []
