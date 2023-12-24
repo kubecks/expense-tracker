@@ -320,3 +320,10 @@ def edit_or_remove_expense(self):
 
             elif edit_or_remove_choice == "2":
                 # Remove Expense
+                removed_expense = self.expenses.pop(expense_index)
+                self.save_expenses()
+                print(f"Expense '{removed_expense}' removed successfully.")
+            else:
+                print("Invalid option.")
+        else:
+            print("Invalid expense index.")
