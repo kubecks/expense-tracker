@@ -55,3 +55,8 @@ def setup_logger(self):
 def set_user_budget(self, budget):
         """Set the user's monthly budget."""
         self.user_budget = budget
+
+def get_user_budget(self):
+        """Prompt  user for their monthly budget."""
+        return float(input("Enter your monthly budget: "))
+
