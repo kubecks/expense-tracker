@@ -42,3 +42,12 @@ class ExpenseTracker:
         self.expense_categories = self.load_categories()
         self.user_budget = self.get_user_budget()
         self.setup_logger()
+
+def setup_logger(self):
+        """Set up a logger for the application."""
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler = logging.FileHandler('expense_tracker.log')
+        file_handler.setFormatter(formatter)
+        self.logger.addHandler(file_handler)
