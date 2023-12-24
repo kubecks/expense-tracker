@@ -173,3 +173,18 @@ def load_categories(self):
         except Exception as e:
             self.logger.error(f"Error loading categories from Google Sheets: {e}")
             return []
+
+def edit_item(self, items, item_type):
+        """Edit an item in specified list of items."""
+        try:
+            self.display_items(items, item_type)
+            item_index = int(input(f"Enter the index of the {item_type.lower()} to edit: ")) - 1
+            if item_index in range(len(items)):
+                new_value = input(f"Enter the new value for '{items[item_index]}': ")
+                items[item_index] = new_value
+                self.save_data(items, self.categories_file_path)
+                print(f"{item_type} updated successfully.")
+            else:
+                print("Invalid index.")
+        except Exception as e:
+            self.logger.error(f"Error editing item: {e}")
