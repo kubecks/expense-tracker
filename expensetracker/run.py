@@ -32,3 +32,13 @@ class Expense:
 
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.name} - {self.category} - €{self.amount:.2f}"
+
+class ExpenseTracker:
+    """Manages the expense tracking application."""
+    def __init__(self, spreadsheet):
+        self.expense_sheet = spreadsheet.worksheet('expenses')
+        self.categories_sheet = spreadsheet.worksheet('categories')
+        self.expenses = []
+        self.expense_categories = self.load_categories()
+        self.user_budget = self.get_user_budget()
+        self.setup_logger()
