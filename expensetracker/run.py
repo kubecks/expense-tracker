@@ -276,3 +276,15 @@ def display_expenses(self):
             table_data.append([i, expense.date.strftime('%d/%m/%Y'), expense.name, expense.category, f"€{expense.amount:.2f}"])
 
         print(tabulate(table_data, headers, tablefmt="pretty"))
+
+def display_categories(self):
+        """Display the existing expense categories."""
+        print("Existing Categories:")
+        for i, category_name in enumerate(self.expense_categories, start=1):
+            print(f"  {i}. {category_name}")
+        
+    def edit_or_remove_expense(self):
+        
+        """Edit or remove an expense from the list of expenses."""
+        self.display_expenses()
+        expense_index = int(input("Enter the index of the expense to edit/remove: ")) - 1
