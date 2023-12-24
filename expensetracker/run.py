@@ -188,3 +188,17 @@ def edit_item(self, items, item_type):
                 print("Invalid index.")
         except Exception as e:
             self.logger.error(f"Error editing item: {e}")
+
+def delete_item(self, items, item_type):
+        """Delete item in specified list of items."""
+        try:
+            self.display_items(items, item_type)
+            item_index = int(input(f"Enter the index of the {item_type.lower()} to delete: ")) - 1
+            if item_index in range(len(items)):
+                deleted_item = items.pop(item_index)
+                self.save_data(items, self.categories_file_path)
+                print(f"{item_type} '{deleted_item}' deleted successfully.")
+            else:
+                print("Invalid index.")
+        except Exception as e:
+            self.logger.error(f"Error deleting item: {e}")
