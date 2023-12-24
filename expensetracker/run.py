@@ -283,8 +283,40 @@ def display_categories(self):
         for i, category_name in enumerate(self.expense_categories, start=1):
             print(f"  {i}. {category_name}")
         
-    def edit_or_remove_expense(self):
+def edit_or_remove_expense(self):
         
         """Edit or remove an expense from the list of expenses."""
         self.display_expenses()
         expense_index = int(input("Enter the index of the expense to edit/remove: ")) - 1
+
+        if expense_index in range(len(self.expenses)):
+            selected_expense = self.expenses[expense_index]
+
+            print(f"Selected Expense: {selected_expense}")
+            print("1. Edit Expense")
+            print("2. Remove Expense")
+            edit_or_remove_choice = input("Select an option (1 or 2): ")
+
+            if edit_or_remove_choice == "1":
+                # Edit Expense
+                updated_name = input("Enter the updated expense name (or press Enter to keep the current name): ")
+                updated_amount = input("Enter the updated expense amount (or press Enter to keep the current amount): ")
+
+                self.display_categories()
+                selected_category_index = input("Enter the number of the existing category to update (or press Enter to keep the current category): ")
+                if selected_category_index:
+                    selected_category_index = int(selected_category_index) - 1
+                if selected_category_index in range(len(self.expense_categories)):
+                    selected_category = self.expense_categories[selected_category_index]
+                    selected_expense.category = selected_category
+
+                if updated_name:
+                    selected_expense.name = updated_name
+                if updated_amount:
+                    selected_expense.amount = float(updated_amount)
+
+                self.save_expenses()
+                print("Expense updated successfully.")
+
+            elif edit_or_remove_choice == "2":
+                # Remove Expense
