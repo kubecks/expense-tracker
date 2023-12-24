@@ -82,3 +82,22 @@ def load_data(self, sheet, column):
         except Exception as e:
             self.logger.error(f"Error loading data from Google Sheets: {e}")
             return []
+
+def save_data(self, sheet, data, range_name):
+        """Save data to a specific range in a Google Sheets worksheet."""
+        try:            
+            # Clear the existing data in the range
+            sheet.values().clear(spreadsheetId=self.spreadsheet.id, range=range_name).execute()
+
+            # Prepare the data for writing
+            values = [
+                data,
+            ]
+
+            # Write the new data to the range
+            body = {
+                "values": values,
+            }
+            result = sheet.values().update(spreadsheetId=self.spreadsheet.id, range=range_name, valueInputOption="RAW", body=body).execute()
+        except Exception as e:
+            self.logger.error(f"Error saving data to Google Sheets: {e}")
