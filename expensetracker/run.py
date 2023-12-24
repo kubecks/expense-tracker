@@ -352,3 +352,23 @@ def run_menu_option(self, option):
         else:
             print("Invalid choice. Please try again.")
 
+def run(self):
+        """Run the main application loop."""
+        self.load_expenses()
+        option = ""
+        while option != "exit":
+            print("Expense Tracker Menu")
+            print("1. Add Expense")
+            print("2. Display Expenses")
+            print("3. Edit/Remove Expense")
+            print("4. Adjust Monthly Budget")
+            print("5. Manage Categories")
+            print("6. Summarize Expenses")
+            print("7. Exit")
+
+            option = input("Select an option: ")
+            result = self.run_menu_option(option)
+            if result == "exit":
+                option = result
+
+
