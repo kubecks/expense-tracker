@@ -60,3 +60,12 @@ def get_user_budget(self):
         """Prompt  user for their monthly budget."""
         return float(input("Enter your monthly budget: "))
 
+def colorize(self, text, color):
+        """Add color formatting to text."""
+        colors = {
+            "red": "\033[91m",
+            "green": "\033[92m",
+            "white": "\033[0m",
+        }
+        return f"{colors[color]}{text}{colors['white']}"
+
