@@ -51,3 +51,7 @@ def setup_logger(self):
         file_handler = logging.FileHandler('expense_tracker.log')
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
+
+def set_user_budget(self, budget):
+        """Set the user's monthly budget."""
+        self.user_budget = budget
