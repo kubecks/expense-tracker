@@ -69,3 +69,16 @@ def colorize(self, text, color):
         }
         return f"{colors[color]}{text}{colors['white']}"
 
+def load_data(self, sheet, column):
+        """Load data from specific column in Google Sheets worksheet."""
+        try:
+            column_obj = sheet.find(column)
+            if column_obj:
+                data = sheet.col_values(column_obj.col)
+                data.pop(0)  # Remove the header
+                return data
+            else:
+                return []  # Column not found
+        except Exception as e:
+            self.logger.error(f"Error loading data from Google Sheets: {e}")
+            return []
