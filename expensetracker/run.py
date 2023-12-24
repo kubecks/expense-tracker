@@ -21,3 +21,14 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET_URL = 'https://docs.google.com/spreadsheets/d/1TR5G47Vod-z4LYL8L5ptrYjAFKCOhmeneQodZjO19qE'
 SHEET = GSPREAD_CLIENT.open_by_url(SHEET_URL)
+
+class Expense:
+    """Expense entry."""
+    def __init__(self, name, amount, category, date):
+        self.name = name
+        self.amount = amount
+        self.category = category
+        self.date = datetime.strptime(date, "%d-%m-%Y")
+
+    def __str__(self):
+        return f"{self.date.strftime('%Y-%m-%d')} - {self.name} - {self.category} - €{self.amount:.2f}"
