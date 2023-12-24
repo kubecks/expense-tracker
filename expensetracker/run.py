@@ -101,3 +101,31 @@ def save_data(self, sheet, data, range_name):
             result = sheet.values().update(spreadsheetId=self.spreadsheet.id, range=range_name, valueInputOption="RAW", body=body).execute()
         except Exception as e:
             self.logger.error(f"Error saving data to Google Sheets: {e}")
+
+def summarize_expenses(self):
+        """Summarize user's expenses and display the summary."""
+        category_totals = {}
+        total_expenses = 0
+
+        for expense in self.expenses:
+            total_expenses += expense.amount
+            category_totals[expense.category] = category_totals.get(expense.category, 0) + expense.amount
+
+        budget = self.user_budget
+
+        if total_expenses < budget:
+            total_expenses_formatted = self.colorize(f'€{total_expenses:.2f}', 'green')
+            outstanding_budget = self.colorize(f'€{budget - total_expenses:.2f}', 'green')
+        elif total_expenses > budget:
+            total_expenses_formatted = self.colorize(f'€{total_expenses:.2f}', 'red')
+            outstanding_budget = self.colorize(f'€{budget - total_expenses:.2f}', 'red')
+        else:
+            total_expenses_formatted = self.colorize(f'€{total_expenses:.2f}', 'white')
+            outstanding_budget = self.colorize(f'€{budget - total_expenses:.2f}', 'white')
+
+        print(f"Total Expenses: {total_expenses_formatted}")
+        print(f"Outstanding Monthly Budget: {outstanding_budget}")
+        print("Category-wise Expenses:")
+        for category, amount in category_totals.items():
+            formatted_amount = self.colorize(f'€{amount:.2f}', 'green')
+            print(f"{category}: {formatted_amount}")
