@@ -129,3 +129,25 @@ def summarize_expenses(self):
         for category, amount in category_totals.items():
             formatted_amount = self.colorize(f'€{amount:.2f}', 'green')
             print(f"{category}: {formatted_amount}")
+
+def load_expenses(self):
+        """Load expenses data from Google Sheets and convert it to Expense objects.
+
+        Returns:
+            list: list of Expense objects.
+        """
+        try:
+            expense_data = self.load_data(self.expense_sheet, "Expense Name")
+            amount_data = self.load_data(self.expense_sheet, "Amount")
+            category_data = self.load_data(self.expense_sheet, "Category")
+
+            expenses = []
+
+            for name, amount, category in zip(expense_data, amount_data, category_data):
+                expenses.append(Expense(name, float(amount), category))
+
+            return expenses
+        except Exception as e:
+            self.logger.error(f"Error loading expenses from Google Sheets: {e}")
+            return []
+
