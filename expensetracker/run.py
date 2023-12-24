@@ -239,3 +239,26 @@ def manage_items(self, items, item_type):
             else:
                 print("Invalid choice. Please try again.")
 
+def get_user_expense(self):
+        """Get user input to create a new expense."""
+        print(f"🎯 Getting User Expense")
+        expense_name = input("Enter expense name: ")
+        expense_amount = float(input("Enter expense amount: "))
+        expense_date = input("Enter expense date (DD-MM-YYYY): ")
+
+        while True:
+            print("Select a category: ")
+            for i, category_name in enumerate(self.expense_categories, start=1):
+                print(f"  {i}. {category_name}")
+
+            value_range = f"[1 - {len(self.expense_categories)}]"
+            selected_index = int(input(f"Enter a category number {value_range}: ")) - 1
+
+            if selected_index in range(len(self.expense_categories)):
+                selected_category = self.expense_categories[selected_index]
+                new_expense = Expense(
+                    name=expense_name, category=selected_category, amount=expense_amount, date=expense_date
+                )
+                return new_expense
+            else:
+                print("Invalid category. Please try again!")
