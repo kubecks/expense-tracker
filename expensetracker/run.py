@@ -371,4 +371,12 @@ def run(self):
             if result == "exit":
                 option = result
 
+def main(self):
+        """Main function that initializes logging and runs the application."""
+        print(f"🎯 Running Expense Tracker!")
+        logging.basicConfig(level=logging.INFO)
+        self.run()
 
+if __name__ == "__main__":
+    expense_tracker = ExpenseTracker(SHEET)
+    expense_tracker.main()
