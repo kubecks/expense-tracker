@@ -262,3 +262,17 @@ def get_user_expense(self):
                 return new_expense
             else:
                 print("Invalid category. Please try again!")
+
+def display_expenses(self):
+        """Display the list of expenses in a table."""
+        if not self.expenses:
+            print("No expenses found.")
+            return
+
+        table_data = []
+        headers = ["Index", "Date", "Expense Name", "Category", "Amount"]
+
+        for i, expense in enumerate(self.expenses, start=1):
+            table_data.append([i, expense.date.strftime('%d/%m/%Y'), expense.name, expense.category, f"€{expense.amount:.2f}"])
+
+        print(tabulate(table_data, headers, tablefmt="pretty"))
