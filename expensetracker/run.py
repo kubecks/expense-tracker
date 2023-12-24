@@ -202,3 +202,10 @@ def delete_item(self, items, item_type):
                 print("Invalid index.")
         except Exception as e:
             self.logger.error(f"Error deleting item: {e}")
+            
+def display_items(self, items, item_type):
+        """Display list of items w/ index numbers"""
+        print(f"{item_type} List:")
+        for index, item in enumerate(items, start=1):
+            print(f"{index}. {item}")
+
