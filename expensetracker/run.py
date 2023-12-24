@@ -209,3 +209,33 @@ def display_items(self, items, item_type):
         for index, item in enumerate(items, start=1):
             print(f"{index}. {item}")
 
+def manage_items(self, items, item_type):
+        """Manage items in the specified list."""
+        while True:
+            print(f"{item_type} Management")
+            print("1. Display Items")
+            print("2. Add Item")
+            print("3. Edit Item")
+            print("4. Delete Item")
+            print("5. Exit")
+            choice = input("Select an option: ")
+
+            if choice == "1":
+                self.display_items(items, item_type)
+            elif choice == "2":
+                new_item = input(f"Enter the new {item_type.lower()}: ")
+                if new_item not in items:
+                    items.append(new_item)
+                    self.save_data(self.categories_sheet, items, "Category")
+                    print(f"{item_type} '{new_item}' added successfully.")
+                else:
+                    print(f"{item_type} already exists.")
+            elif choice == "3":
+                self.edit_item(items, item_type)
+            elif choice == "4":
+                self.delete_item(items, item_type)
+            elif choice == "5":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
