@@ -327,3 +327,28 @@ def edit_or_remove_expense(self):
                 print("Invalid option.")
         else:
             print("Invalid expense index.")
+            
+def run_menu_option(self, option):
+        """Run the selected menu option."""
+        if option == "1":
+            expense = self.get_user_expense()
+            self.expenses.append(expense)
+            self.save_expenses()
+            print("Expense added successfully.")
+        elif option == "2":
+            self.display_expenses()
+        elif option == "3":
+            self.edit_or_remove_expense()
+        elif option == "4":
+            new_budget = self.get_user_budget()
+            self.set_user_budget(new_budget)
+            print(f"Monthly budget adjusted to €{new_budget:.2f}")
+        elif option == "5":
+            self.manage_items(self.expense_categories, "Category")
+        elif option == "6":
+            self.summarize_expenses()
+        elif option == "7":
+            return "exit"  # Signal to exit the loop
+        else:
+            print("Invalid choice. Please try again.")
+
