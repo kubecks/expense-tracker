@@ -1,0 +1,5 @@
+2023-12-24 12:41:45,990 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2023-12-24 18:39:16,852 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2023-12-27 12:51:43,755 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2023-12-27 12:53:42,745 - ERROR - Error deleting item: invalid literal for int() with base 10: ''
+2023-12-27 12:54:06,850 - ERROR - Error editing item: 'ExpenseTracker' object has no attribute 'categories_file_path'
