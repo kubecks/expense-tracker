@@ -23,3 +23,5 @@
 2024-01-16 06:10:10,574 - INFO - Google Sheet updated successfully.
 2024-01-16 06:10:48,824 - INFO - Google Sheet updated successfully.
 2024-01-16 06:11:29,546 - INFO - Google Sheet updated successfully.
+2024-01-16 07:57:11,243 - ERROR - Error loading expenses from Google Sheets: Expense.__init__() missing 1 required positional argument: 'date'
+2024-01-16 07:58:14,027 - INFO - Google Sheet updated successfully.

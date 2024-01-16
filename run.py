@@ -81,16 +81,25 @@ class ExpenseTracker:
             }
             return f"{colors[color]}{text}{colors['white']}"
 
-    def load_data(self, sheet, column):
+    def load_data(self, sheet, column_name):
             """Load data from specific column in Google Sheets worksheet."""
             try:
-                column_obj = sheet.find(column)
-                if column_obj:
-                    data = sheet.col_values(column_obj.col)
-                    data.pop(0)  # Remove the header
-                    return data
+                # Find the cell with the specified header name
+                header_cell = sheet.find(column_name)
+                if header_cell:
+                    # Make sure the found cell is in the first row
+                    if header_cell.row == 1:
+                        # Get all values in the column
+                        column_data = sheet.col_values(header_cell.col)
+                        # Remove the header
+                        column_data.pop(0)
+                        return column_data
+                    else:
+                        self.logger.error(f"Header '{column_name}' found but not in the first row.")
+                        return []
                 else:
-                    return []  # Column not found
+                    self.logger.error(f"Header '{column_name}' not found in the sheet.")
+                    return []
             except Exception as e:
                 self.logger.error(f"Error loading data from Google Sheets: {e}")
                 return []
