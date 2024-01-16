@@ -200,6 +200,7 @@ class ExpenseTracker:
                 self.update_sheet_data(expense_data)
             except Exception as e:
                 self.logger.error(f"Error saving expenses to Google Sheets: {e}")
+                print("Failed to save expenses to Google Sheets.")
 
     def load_categories(self):
             """Load expense categories from Google Sheets."""
@@ -294,15 +295,14 @@ class ExpenseTracker:
                         raise ValueError("Amount cannot be negative.")
                     return amount
                 except ValueError as e:
-                    print(f"Invalid input: {e}")
+                    print(f"Invalid input: {e}. Please enter a valid number.")
 
     def get_valid_date(self):
             """Get and validate expense date from user."""
             while True:
                 date_str = input("Enter expense date (DD-MM-YYYY): ")
                 try:
-                    datetime.strptime(date_str, "%d-%m-%Y")
-                    return date_str
+                    return datetime.strptime(date_str, "%d-%m-%Y").strftime("%Y-%m-%d")
                 except ValueError:
                     print("Invalid date format. Please use DD-MM-YYYY.")
 
@@ -405,8 +405,9 @@ class ExpenseTracker:
                 print("Invalid choice. Please try again.")
 
     def run(self):
-            """Run the main application loop."""
-            self.load_expenses()
+        """Run the main application loop."""
+        try:
+            self.load_expenses()  # Load expenses once at the start
             option = ""
             while option != "exit":
                 print("Expense Tracker Menu")
@@ -422,6 +423,13 @@ class ExpenseTracker:
                 result = self.run_menu_option(option)
                 if result == "exit":
                     option = result
+
+        except KeyboardInterrupt:
+            print("\nExiting the application. Goodbye!")
+        except Exception as e:
+            self.logger.error(f"Unexpected error in the main loop: {e}")
+            print("An unexpected error occurred. Exiting the application.")
+                    
 
     def main(self):
             """Main function that initializes logging and runs the application."""
