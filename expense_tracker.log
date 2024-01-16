@@ -3,3 +3,23 @@
 2023-12-27 12:51:43,755 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
 2023-12-27 12:53:42,745 - ERROR - Error deleting item: invalid literal for int() with base 10: ''
 2023-12-27 12:54:06,850 - ERROR - Error editing item: 'ExpenseTracker' object has no attribute 'categories_file_path'
+2024-01-11 21:26:26,874 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-12 08:05:38,861 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-12 08:42:54,014 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-12 08:43:16,233 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-12 08:47:24,092 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-12 08:49:50,543 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-13 02:38:16,151 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-13 02:49:52,572 - ERROR - Error loading expenses from Google Sheets: could not convert string to float: 'Amount'
+2024-01-13 04:45:27,931 - ERROR - Error saving expenses to Google Sheets: name 'range_name' is not defined
+2024-01-15 05:24:42,887 - ERROR - Error saving expenses to Google Sheets: name 'range_name' is not defined
+2024-01-15 05:30:33,037 - ERROR - Error saving expenses to Google Sheets: name 'range_name' is not defined
+2024-01-15 05:34:16,377 - ERROR - Error saving expenses to Google Sheets: name 'range_name' is not defined
+2024-01-15 05:59:07,114 - ERROR - Error saving expenses to Google Sheets: update got unexpected keyword arguments: ['range']
+2024-01-16 06:06:17,476 - INFO - Google Sheet updated successfully.
+2024-01-16 06:08:42,352 - INFO - Google Sheet updated successfully.
+2024-01-16 06:09:12,567 - INFO - Google Sheet updated successfully.
+2024-01-16 06:09:39,757 - INFO - Google Sheet updated successfully.
+2024-01-16 06:10:10,574 - INFO - Google Sheet updated successfully.
+2024-01-16 06:10:48,824 - INFO - Google Sheet updated successfully.
+2024-01-16 06:11:29,546 - INFO - Google Sheet updated successfully.

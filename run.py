@@ -29,8 +29,11 @@ class Expense:
         self.name = name
         self.amount = amount
         self.category = category
-        self.date = datetime.strptime(date, "%d-%m-%Y")
-
+        try:
+            self.date = datetime.strptime(date, "%d-%m-%Y")
+        except ValueError:
+            raise ValueError("Date must be in DD-MM-YYYY format")
+        
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.name} - {self.category} - €{self.amount:.2f}"
     
@@ -59,8 +62,15 @@ class ExpenseTracker:
             self.user_budget = budget
 
     def get_user_budget(self):
-            """Prompt  user for their monthly budget."""
-            return float(input("Enter your monthly budget: "))
+        """Prompt user for their monthly budget."""
+        while True:
+            try:
+                budget = float(input("Enter your monthly budget: "))
+                if budget < 0:
+                    raise ValueError("Budget cannot be negative.")
+                return budget
+            except ValueError as e:
+                print(f"Invalid input: {e}")
 
     def colorize(self, text, color):
             """Add color formatting to text."""
@@ -145,24 +155,40 @@ class ExpenseTracker:
 
                 expenses = []
 
+                """for name, amount, category in zip(expense_data, amount_data, category_data):
+                    expenses.append(Expense(name, float(amount), category))"""
+
                 for name, amount, category in zip(expense_data, amount_data, category_data):
-                    expenses.append(Expense(name, float(amount), category))
+                    if amount.isdigit():  # Check if amount is a digit before conversion
+                        expenses.append(Expense(name, float(amount), category))
 
                 return expenses
             except Exception as e:
                 self.logger.error(f"Error loading expenses from Google Sheets: {e}")
                 return []
 
+    def prepare_expense_data_for_sheet(self):
+            """Prepare the expense data for Google Sheets."""
+            expense_data = [["Expense Name", "Amount", "Category"]]  # Include headers
+            for expense in self.expenses:
+                # Append each expense's details as a list
+                expense_data.append([expense.name, expense.amount, expense.category])
+            return expense_data
+
+    def update_sheet_data(self, data, start_cell='A1'):
+            """Update the Google Sheet with given data starting from the start_cell."""
+            try:
+                # Use batch update for efficiency
+                self.expense_sheet.update(start_cell, data, value_input_option='USER_ENTERED')
+                self.logger.info("Google Sheet updated successfully.")
+            except Exception as e:
+                self.logger.error(f"Error updating Google Sheet: {e}")
+
     def save_expenses(self):
             """Save expenses data to Google Sheets."""
             try:
-                expense_names = ["Expense Name"] + [expense.name for expense in self.expenses]
-                expense_amounts = ["Amount"] + [str(expense.amount) for expense in self.expenses]
-                expense_categories = ["Category"] + [expense.category for expense in self.expenses]
-
-                data_to_save = [expense_names, expense_amounts, expense_categories]
-
-                self.expense_sheet.update(data_to_save)
+                expense_data = self.prepare_expense_data_for_sheet()
+                self.update_sheet_data(expense_data)
             except Exception as e:
                 self.logger.error(f"Error saving expenses to Google Sheets: {e}")
 
@@ -240,30 +266,51 @@ class ExpenseTracker:
                     break
                 else:
                     print("Invalid choice. Please try again.")
-
+                    
     def get_user_expense(self):
             """Get user input to create a new expense."""
-            print(f"🎯 Getting User Expense")
-            expense_name = input("Enter expense name: ")
-            expense_amount = float(input("Enter expense amount: "))
-            expense_date = input("Enter expense date (DD-MM-YYYY): ")
+            print("🎯 Getting User Expense")
+            name = input("Enter expense name: ")
+            amount = self.get_valid_amount()
+            date = self.get_valid_date()
+            category = self.choose_category()
+            return Expense(name, amount, category, date)
 
+    def get_valid_amount(self):
+            """Get and validate expense amount from user."""
+            while True:
+                try:
+                    amount = float(input("Enter expense amount: "))
+                    if amount < 0:
+                        raise ValueError("Amount cannot be negative.")
+                    return amount
+                except ValueError as e:
+                    print(f"Invalid input: {e}")
+
+    def get_valid_date(self):
+            """Get and validate expense date from user."""
+            while True:
+                date_str = input("Enter expense date (DD-MM-YYYY): ")
+                try:
+                    datetime.strptime(date_str, "%d-%m-%Y")
+                    return date_str
+                except ValueError:
+                    print("Invalid date format. Please use DD-MM-YYYY.")
+
+    def choose_category(self):
+            """Allow user to choose an expense category."""
             while True:
                 print("Select a category: ")
                 for i, category_name in enumerate(self.expense_categories, start=1):
-                    print(f"  {i}. {category_name}")
-
-                value_range = f"[1 - {len(self.expense_categories)}]"
-                selected_index = int(input(f"Enter a category number {value_range}: ")) - 1
-
-                if selected_index in range(len(self.expense_categories)):
-                    selected_category = self.expense_categories[selected_index]
-                    new_expense = Expense(
-                        name=expense_name, category=selected_category, amount=expense_amount, date=expense_date
-                    )
-                    return new_expense
-                else:
-                    print("Invalid category. Please try again!")
+                    print(f"{i}. {category_name}")
+                try:
+                    selected_index = int(input("Enter a category number: ")) - 1
+                    if 0 <= selected_index < len(self.expense_categories):
+                        return self.expense_categories[selected_index]
+                    else:
+                        print("Invalid category number.")
+                except ValueError:
+                    print("Please enter a valid number.")                 
 
     def display_expenses(self):
             """Display the list of expenses in a table."""
@@ -279,12 +326,6 @@ class ExpenseTracker:
 
             print(tabulate(table_data, headers, tablefmt="pretty"))
 
-    def display_categories(self):
-            """Display the existing expense categories."""
-            print("Existing Categories:")
-            for i, category_name in enumerate(self.expense_categories, start=1):
-                print(f"  {i}. {category_name}")
-            
     def edit_or_remove_expense(self):
             
             """Edit or remove an expense from the list of expenses."""
