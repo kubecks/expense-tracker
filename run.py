@@ -5,9 +5,9 @@ import warnings
 from tabulate import tabulate
 from datetime import datetime
 
-
-# Suppress the gspread warning
+# Suppress UserWarning from gspread
 warnings.filterwarnings("ignore", category=UserWarning, module="gspread")
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="gspread")
 
 # Google Sheets scope
 SCOPE = [
@@ -25,18 +25,23 @@ SHEET = GSPREAD_CLIENT.open_by_url(SHEET_URL)
 
 class Expense:
     """Expense entry."""
-    def __init__(self, name, amount, category, date):
+    def __init__(self, name, amount, category, date_str):
         self.name = name
         self.amount = amount
         self.category = category
+        self.date = self.validate_date(date_str)
+    
+    @staticmethod
+    def validate_date(date_str):
+        """Validates and converts the date string to a datetime object."""
         try:
-            self.date = datetime.strptime(date, "%d-%m-%Y")
+            return datetime.strptime(date_str, "%d-%m-%Y")
         except ValueError:
             raise ValueError("Date must be in DD-MM-YYYY format")
-        
+    
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.name} - {self.category} - €{self.amount:.2f}"
-    
+
 
 class ExpenseTracker:
     """Manages the expense tracking application."""
@@ -161,15 +166,12 @@ class ExpenseTracker:
                 expense_data = self.load_data(self.expense_sheet, "Expense Name")
                 amount_data = self.load_data(self.expense_sheet, "Amount")
                 category_data = self.load_data(self.expense_sheet, "Category")
-
+                
                 expenses = []
-
-                """for name, amount, category in zip(expense_data, amount_data, category_data):
-                    expenses.append(Expense(name, float(amount), category))"""
-
                 for name, amount, category in zip(expense_data, amount_data, category_data):
-                    if amount.isdigit():  # Check if amount is a digit before conversion
-                        expenses.append(Expense(name, float(amount), category))
+                    placeholder_date = "01-01-2000"  # Placeholder date
+                    if amount.replace('.', '', 1).isdigit(): # Check if amount is a digit before conversion
+                        expenses.append(Expense(name, float(amount), category, placeholder_date))
 
                 return expenses
             except Exception as e:
@@ -178,7 +180,7 @@ class ExpenseTracker:
 
     def prepare_expense_data_for_sheet(self):
             """Prepare the expense data for Google Sheets."""
-            expense_data = [["Expense Name", "Amount", "Category"]]  # Include headers
+            expense_data = [["Expense Name", "Amount", "Category"]]  
             for expense in self.expenses:
                 # Append each expense's details as a list
                 expense_data.append([expense.name, expense.amount, expense.category])
@@ -188,7 +190,7 @@ class ExpenseTracker:
             """Update the Google Sheet with given data starting from the start_cell."""
             try:
                 # Use batch update for efficiency
-                self.expense_sheet.update(start_cell, data, value_input_option='USER_ENTERED')
+                self.expense_sheet.update(range_name=start_cell, values=data, value_input_option='USER_ENTERED')
                 self.logger.info("Google Sheet updated successfully.")
             except Exception as e:
                 self.logger.error(f"Error updating Google Sheet: {e}")
@@ -282,9 +284,9 @@ class ExpenseTracker:
             print("🎯 Getting User Expense")
             name = input("Enter expense name: ")
             amount = self.get_valid_amount()
-            date = self.get_valid_date()
+            date_str = self.get_valid_date()
             category = self.choose_category()
-            return Expense(name, amount, category, date)
+            return Expense(name, amount, category, date_str)
 
     def get_valid_amount(self):
             """Get and validate expense amount from user."""
@@ -302,10 +304,11 @@ class ExpenseTracker:
             while True:
                 date_str = input("Enter expense date (DD-MM-YYYY): ")
                 try:
-                    return datetime.strptime(date_str, "%d-%m-%Y").strftime("%Y-%m-%d")
+                    datetime.strptime(date_str, "%d-%m-%Y")
+                    return date_str
                 except ValueError:
                     print("Invalid date format. Please use DD-MM-YYYY.")
-
+            
     def choose_category(self):
             """Allow user to choose an expense category."""
             while True:
@@ -403,13 +406,12 @@ class ExpenseTracker:
                 return "exit"  # Signal to exit the loop
             else:
                 print("Invalid choice. Please try again.")
-
+            
     def run(self):
         """Run the main application loop."""
         try:
             self.load_expenses()  # Load expenses once at the start
-            option = ""
-            while option != "exit":
+            while True:
                 print("Expense Tracker Menu")
                 print("1. Add Expense")
                 print("2. Display Expenses")
@@ -420,12 +422,15 @@ class ExpenseTracker:
                 print("7. Exit")
 
                 option = input("Select an option: ")
-                result = self.run_menu_option(option)
-                if result == "exit":
-                    option = result
-
+                if option == "7":
+                    break  # Exit the loop if option 7 is selected
+                self.run_menu_option(option)
+        
         except KeyboardInterrupt:
             print("\nExiting the application. Goodbye!")
+        except ValueError as e:
+            self.logger.error(f"Value error: {e}")
+            print(f"An error occurred: {e}")
         except Exception as e:
             self.logger.error(f"Unexpected error in the main loop: {e}")
             print("An unexpected error occurred. Exiting the application.")
