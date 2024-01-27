@@ -1,9 +1,9 @@
 import logging
 import gspread
 from google.oauth2.service_account import Credentials
-import warnings
 from tabulate import tabulate
 from datetime import datetime
+import warnings
 
 # Suppress UserWarning from gspread
 warnings.filterwarnings("ignore", category=UserWarning, module="gspread")
@@ -357,13 +357,14 @@ class ExpenseTracker:
                     updated_name = input("Enter the updated expense name (or press Enter to keep the current name): ")
                     updated_amount = input("Enter the updated expense amount (or press Enter to keep the current amount): ")
 
-                    self.display_categories()
+                    # Display categories for selection
+                    self.display_items(self.expense_categories, "Category")
                     selected_category_index = input("Enter the number of the existing category to update (or press Enter to keep the current category): ")
                     if selected_category_index:
                         selected_category_index = int(selected_category_index) - 1
-                    if selected_category_index in range(len(self.expense_categories)):
-                        selected_category = self.expense_categories[selected_category_index]
-                        selected_expense.category = selected_category
+                        if selected_category_index in range(len(self.expense_categories)):
+                            selected_category = self.expense_categories[selected_category_index]
+                            selected_expense.category = selected_category                    
 
                     if updated_name:
                         selected_expense.name = updated_name
