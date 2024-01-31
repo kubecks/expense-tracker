@@ -188,9 +188,10 @@ class ExpenseTracker:
 
     def update_sheet_data(self, data, start_cell='A1'):
             """Update the Google Sheet with given data starting from the start_cell."""
+            
             try:
                 # Use batch update for efficiency
-                self.expense_sheet.update(range_name=start_cell, values=data, value_input_option='USER_ENTERED')
+                self.expense_sheet.update(values=data, range_name=start_cell, value_input_option='USER_ENTERED')
                 self.logger.info("Google Sheet updated successfully.")
             except Exception as e:
                 self.logger.error(f"Error updating Google Sheet: {e}")

@@ -65,3 +65,12 @@
 2024-01-27 04:46:20,133 - INFO - Google Sheet updated successfully.
 2024-01-27 04:46:38,609 - INFO - Google Sheet updated successfully.
 2024-01-27 04:46:54,467 - INFO - Google Sheet updated successfully.
+2024-01-28 06:49:03,982 - INFO - Google Sheet updated successfully.
+2024-01-28 07:15:15,610 - INFO - Google Sheet updated successfully.
+2024-01-28 07:25:50,934 - ERROR - Error updating Google Sheet: update got unexpected keyword arguments: ['range']
+2024-01-28 07:54:01,939 - INFO - Google Sheet updated successfully.
+2024-01-31 05:22:33,611 - ERROR - Error updating Google Sheet: {'code': 400, 'message': 'Invalid values[0][0]: list_value {\n  values {\n    string_value: "Expense Name"\n  }\n  values {\n    string_value: "Amount"\n  }\n  values {\n    string_value: "Category"\n  }\n}\n', 'status': 'INVALID_ARGUMENT'}
+2024-01-31 05:40:33,759 - INFO - Google Sheet updated successfully.
+2024-01-31 05:44:21,605 - INFO - Google Sheet updated successfully.
+2024-01-31 05:45:19,978 - INFO - Google Sheet updated successfully.
+2024-01-31 05:45:42,943 - INFO - Google Sheet updated successfully.
