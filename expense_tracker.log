@@ -74,3 +74,35 @@
 2024-01-31 05:44:21,605 - INFO - Google Sheet updated successfully.
 2024-01-31 05:45:19,978 - INFO - Google Sheet updated successfully.
 2024-01-31 05:45:42,943 - INFO - Google Sheet updated successfully.
+2024-01-31 05:59:41,491 - ERROR - Error saving data to Google Sheets: 'Worksheet' object has no attribute 'values'
+2024-01-31 06:00:28,889 - ERROR - Error editing item: 'ExpenseTracker' object has no attribute 'categories_file_path'
+2024-01-31 06:00:47,388 - ERROR - Error deleting item: 'ExpenseTracker' object has no attribute 'categories_file_path'
+2024-01-31 07:12:37,185 - INFO - Google Sheet updated successfully.
+2024-01-31 07:14:07,481 - ERROR - Error saving data to Google Sheets: 'Worksheet' object has no attribute 'values'
+2024-01-31 07:36:59,660 - INFO - Google Sheet updated successfully.
+2024-01-31 07:37:19,736 - INFO - Google Sheet updated successfully.
+2024-02-01 04:11:13,530 - INFO - Google Sheet updated successfully.
+2024-02-01 04:12:36,851 - ERROR - Error saving data to Google Sheets: 'Worksheet' object has no attribute 'values'
+2024-02-01 04:13:38,915 - INFO - Google Sheet updated successfully.
+2024-02-01 04:18:51,228 - INFO - Google Sheet updated successfully.
+2024-02-01 04:19:14,318 - INFO - Google Sheet updated successfully.
+2024-02-01 04:20:37,071 - ERROR - Error saving data to Google Sheets: 'Worksheet' object has no attribute 'values'
+2024-02-01 04:21:55,351 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-01 04:34:06,161 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-01 04:43:36,183 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-01 06:12:01,199 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-02 06:42:15,171 - INFO - Google Sheet updated successfully.
+2024-02-02 06:43:37,385 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-02 07:04:41,508 - INFO - Google Sheet updated successfully.
+2024-02-02 07:05:01,931 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-02 07:22:37,227 - ERROR - Unexpected error in the main loop: ExpenseTracker.save_data() missing 2 required positional arguments: 'data' and 'range_name'
+2024-02-02 07:24:25,654 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-03 08:08:43,463 - INFO - Google Sheet updated successfully.
+2024-02-03 08:09:13,784 - INFO - Google Sheet updated successfully.
+2024-02-03 08:09:28,735 - INFO - Google Sheet updated successfully.
+2024-02-03 08:09:47,628 - ERROR - Error saving data to Google Sheets: name 'column_name' is not defined
+2024-02-03 08:14:07,679 - ERROR - Error saving data to Google Sheets: module 'gspread.utils' has no attribute 'a1_to_col'
+2024-02-03 08:32:30,285 - INFO - Categories updated successfully.
+2024-02-03 10:47:45,915 - INFO - Google Sheet updated successfully.
+2024-02-03 10:52:22,509 - INFO - Categories updated successfully.
+2024-02-03 10:53:24,526 - INFO - Google Sheet updated successfully.

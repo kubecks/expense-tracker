@@ -109,24 +109,24 @@ class ExpenseTracker:
                 self.logger.error(f"Error loading data from Google Sheets: {e}")
                 return []
 
-    def save_data(self, sheet, data, range_name):
-            """Save data to a specific range in a Google Sheets worksheet."""
-            try:            
-                # Clear the existing data in the range
-                sheet.values().clear(spreadsheetId=self.spreadsheet.id, range=range_name).execute()
+    def save_data(self, sheet, data, range_name):                
+            try:
+                sheet = self.categories_sheet
+                column = 'A'  # Assuming 'Category' data is in the first column
+                # Directly using 1 for the column index as 'A' corresponds to the first column
+                col_index = 1
 
-                # Prepare the data for writing
-                values = [
-                    data,
-                ]
+                # Clear existing content in the column after the header.
+                sheet.batch_clear([f"{column}2:{column}{len(data)+100}"])  # Adjust as needed
 
-                # Write the new data to the range
-                body = {
-                    "values": values,
-                }
-                result = sheet.values().update(spreadsheetId=self.spreadsheet.id, range=range_name, valueInputOption="RAW", body=body).execute()
+                # Update the sheet with new data.
+                for i, value in enumerate(data, start=2):  # Starting from row 2 to keep the header
+                    sheet.update_cell(i, col_index, value)
+
+                self.logger.info("Categories updated successfully.")
             except Exception as e:
                 self.logger.error(f"Error saving data to Google Sheets: {e}")
+                
 
     def summarize_expenses(self):
             """Summarize user's expenses and display the summary."""
@@ -188,10 +188,9 @@ class ExpenseTracker:
 
     def update_sheet_data(self, data, start_cell='A1'):
             """Update the Google Sheet with given data starting from the start_cell."""
-            
             try:
                 # Use batch update for efficiency
-                self.expense_sheet.update(values=data, range_name=start_cell, value_input_option='USER_ENTERED')
+                self.expense_sheet.update(range_name=start_cell, values=data, value_input_option='USER_ENTERED')
                 self.logger.info("Google Sheet updated successfully.")
             except Exception as e:
                 self.logger.error(f"Error updating Google Sheet: {e}")
@@ -216,14 +215,15 @@ class ExpenseTracker:
                 return []
 
     def edit_item(self, items, item_type):
-            """Edit an item in specified list of items."""
+            """Edit an item in specified list of items."""        
             try:
-                self.display_items(items, item_type)
+                self.display_items(self.expense_categories, item_type)
                 item_index = int(input(f"Enter the index of the {item_type.lower()} to edit: ")) - 1
-                if item_index in range(len(items)):
-                    new_value = input(f"Enter the new value for '{items[item_index]}': ")
-                    items[item_index] = new_value
-                    self.save_data(items, self.categories_file_path)
+                if item_index in range(len(self.expense_categories)):
+                    new_value = input(f"Enter the new value for '{self.expense_categories[item_index]}': ")
+                    self.expense_categories[item_index] = new_value
+                    # Update the category in Google Sheets
+                    self.update_categories_sheet()
                     print(f"{item_type} updated successfully.")
                 else:
                     print("Invalid index.")
@@ -231,18 +231,29 @@ class ExpenseTracker:
                 self.logger.error(f"Error editing item: {e}")
 
     def delete_item(self, items, item_type):
-            """Delete item in specified list of items."""
+            """Delete item in specified list of items.""" 
             try:
-                self.display_items(items, item_type)
+                self.display_items(self.expense_categories, item_type)
                 item_index = int(input(f"Enter the index of the {item_type.lower()} to delete: ")) - 1
-                if item_index in range(len(items)):
-                    deleted_item = items.pop(item_index)
-                    self.save_data(items, self.categories_file_path)
+                if item_index in range(len(self.expense_categories)):
+                    deleted_item = self.expense_categories.pop(item_index)
+                    # Update the category in Google Sheets
+                    self.update_categories_sheet()
                     print(f"{item_type} '{deleted_item}' deleted successfully.")
                 else:
                     print("Invalid index.")
             except Exception as e:
-                self.logger.error(f"Error deleting item: {e}")
+                self.logger.error(f"Error deleting item: {e}")                
+                
+    def update_categories_sheet(self):
+        """Update the categories sheet in Google Sheets."""
+        try:
+            # Prepare the category data for Google Sheets
+            category_data = [["Category"]] + [[cat] for cat in self.expense_categories]
+            # Update the categories sheet with the new data
+            self.categories_sheet.update('A1', category_data, value_input_option='USER_ENTERED')
+        except Exception as e:
+            self.logger.error(f"Error updating categories in Google Sheets: {e}")
                 
     def display_items(self, items, item_type):
             """Display list of items w/ index numbers"""
@@ -267,7 +278,7 @@ class ExpenseTracker:
                     new_item = input(f"Enter the new {item_type.lower()}: ")
                     if new_item not in items:
                         items.append(new_item)
-                        self.save_data(self.categories_sheet, items, "Category")
+                        self.save_data(self.categories_sheet, self.expense_categories, "Category")
                         print(f"{item_type} '{new_item}' added successfully.")
                     else:
                         print(f"{item_type} already exists.")
